@@ -1,0 +1,88 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <title>Su Borcu Sorgu</title>
+  
+  <style type="text/css">
+  table{
+        width: 100%; 
+		border-collapse: collapse; 
+		
+  }
+  tr:nth-of-type(odd) { 
+  background: #eee; 
+}
+  </style>
+  
+  <link rel="stylesheet" href="jqueryMobile/jquery.mobile-1.4.0.min.css">
+  
+  <!-- Extra Codiqa features -->
+  <link rel="stylesheet" href="codiqa.ext.css">
+  
+  <!-- jQuery and jQuery Mobile -->
+  <script type="text/javascript" src="jqueryMobile/jquery-1.10.2.min.js"></script>
+  <script type="text/javascript" src="jqueryMobile/jquery.mobile-1.4.0.min.js"></script>
+
+  <!-- Extra Codiqa features -->
+  <script src="codiqa.ext.js"></script>
+  
+<script type="text/javascript">
+$(document).ready(function(){
+var url='http://umut.tekguc.info/webservices/su_kimlik.php?kimlikNo=';  
+var query;
+	$('#sorgu').click(function(){	    
+	$.mobile.loading('show', {theme:"d", text:"Lütfen Bekleyin...", textVisible: true});
+		query=$("#query").val();
+		//console.log( query);
+		
+		$.getJSON(url+query+"&callback=?")
+		.done(function( data ) {
+		 $.mobile.loading('hide');
+		      $("#results").empty();			  
+			  $("#results").append('<table id="sonuclar"><tr><th>İsim Soyisim</th><th>Tanker</th><th>Su</th><th>Temizlik</th><th>Kanalizasyon</th><th>Aydınlatma</th><th>Sağlık</th></tr></table>')
+			$.each(data,function(i,table){
+			$('#sontar').html('Güncel faturanızı son ödeme tarihi: ' + table.faturacezatar[0].substr(0, 10));
+			   $("#sonuclar").append('<tr><td>'+table.adi[0]+'</td><td>'+table.tankertoplam[0]+'</td><td>'+table.sutoplam[0]+'</td><td>'+
+			   table.coptoplam[0]+'</td><td>'+table.kanaltoplam[0]+'</td><td>'+table.aydtoplam[0]+'</td><td>'+table.sagliktoplam[0]+'</td></tr>');
+			});
+			
+		});		
+	});
+});
+</script>
+  
+</script>
+ 
+</head>
+<body>
+
+       <div data-role="page" id="page1">
+            <div data-role="header" data-position="fixed">
+                <h1>Girne Belediyesi</h1>
+            </div>
+            <div data-role="content">
+			   <div data-role="fieldcontain">
+                    <label for="query">Kimlik No</label>
+                    <input type="text" id="query" data-mini="true" data-theme="e">
+					   <a data-role="button" data-transition="fade"
+					   data-icon="info" data-iconpos="left" id="sorgu" >Sorgula</a>
+                </div>
+
+			
+				<span id="sontar"></span>
+                <ul data-role="listview" id="results" data-inset="true"></ul>
+            </div>
+
+            <div data-role="footer" data-position="fixed" data-theme="b">
+                <h1>Borç Sorgulama</h1>
+                <a href="index.html" data-role="button">Ana Sayfa</a>
+            </div>
+        </div>
+            
+
+</body>
+</html>

@@ -20,6 +20,31 @@
   <!-- Extra Codiqa features -->
   <script src="codiqa.ext.js"></script>
 
+  <script type="text/javascript">
+//$(document).ready(function(){
+ $(document).on("pageinit","#page2", function() {
+var url='http://umut.tekguc.info/webservices/su_kimlik.php?kimlikNo=';  
+var query;
+	$('#sorgu').click(function(){	    
+	$.mobile.loading('show', {theme:"d", text:"Lütfen Bekleyin...", textVisible: true});
+		query=$("#query").val();
+		//console.log( query);
+		
+		$.getJSON(url+query+"&callback=?")
+		.done(function( data ) {
+		 $.mobile.loading('hide');
+		      $("#results").empty();			  
+			  $("#results").append('<table id="sonuclar"><tr><th>İsim Soyisim</th><th>Tanker</th><th>Su</th><th>Temizlik</th><th>Kanalizasyon</th><th>Aydınlatma</th><th>Sağlık</th></tr></table>')
+			$.each(data,function(i,table){
+			$('#sontar').html('Güncel faturanızı son ödeme tarihi: ' + table.faturacezatar[0].substr(0, 10));
+			   $("#sonuclar").append('<tr><td>'+table.adi[0]+'</td><td>'+table.tankertoplam[0]+'</td><td>'+table.sutoplam[0]+'</td><td>'+
+			   table.coptoplam[0]+'</td><td>'+table.kanaltoplam[0]+'</td><td>'+table.aydtoplam[0]+'</td><td>'+table.sagliktoplam[0]+'</td></tr>');
+			});
+			
+		});		
+	});
+});
+</script>
   
 </head>
 <body>
